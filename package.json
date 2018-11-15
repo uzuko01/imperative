@@ -69,7 +69,7 @@
     "@types/keytar": "4.0.1",
     "@types/lodash": "4.14.106",
     "@types/mustache": "0.8.29",
-    "@types/node": "8.0.28",
+    "@types/node": "8.10.37",
     "@types/progress": "2.0.0",
     "@types/stack-trace": "0.0.28",
     "@types/tmp": "0.0.33",
