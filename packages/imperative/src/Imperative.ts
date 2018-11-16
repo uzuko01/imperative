@@ -13,7 +13,25 @@
  * Main class of the Imperative framework, returned when you
  * require("imperative") e.g. const imperative =  require("imperative");
  */
-import { PerformanceTools } from "../../performance/src/PerformanceTools";
+import { PerformanceTools } from "../../performance";
+
+// Boostrap the performance tools
+if (PerformanceTools.instance.isPerfEnabled) {
+    // These are expensive operations so imperative should
+    // only do it when performance is enabled.
+
+    const Module = require("module");
+
+    // Store the reference to the original require.
+    const originalRequire = Module.prototype.require;
+
+    // Timerify a wrapper named function so we can be sure that not just
+    // any anonymous function gets checked.
+    Module.prototype.require = PerformanceTools.instance.timerify(function NodeModuleLoader() {
+        return originalRequire.apply(this, arguments);
+    });
+}
+
 import { Logger, LoggerConfigBuilder } from "../../logger";
 import { IImperativeConfig } from "./doc/IImperativeConfig";
 import { Arguments } from "yargs";
@@ -88,34 +106,34 @@ export class Imperative {
      * @returns {Promise<void>} A promise indicating that we are done here.
      */
     public static init(config?: IImperativeConfig): Promise<void> {
-        let fcn = () => {
-            return "hello world";
-        };
-
-        console.log(fcn.name);
-
-        fcn = PerformanceTools.instance.timerify(fcn);
-
-        console.log(fcn.name);
-
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-
-        fcn = PerformanceTools.instance.untimerify(fcn);
-        fcn = PerformanceTools.instance.timerify(fcn, "TEST");
-
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-        fcn();
-
-        fcn = PerformanceTools.instance.untimerify(fcn, "TEST");
+        // let fcn = () => {
+        //     return "hello world";
+        // };
+        //
+        // console.log(fcn.name);
+        //
+        // fcn = PerformanceTools.instance.timerify(fcn);
+        //
+        // console.log(fcn.name);
+        //
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        //
+        // fcn = PerformanceTools.instance.untimerify(fcn);
+        // fcn = PerformanceTools.instance.timerify(fcn, "TEST");
+        //
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        // fcn();
+        //
+        // fcn = PerformanceTools.instance.untimerify(fcn, "TEST");
 
         return new Promise<void>(async (initializationComplete: () => void, initializationFailed: ImperativeReject) => {
             try {
