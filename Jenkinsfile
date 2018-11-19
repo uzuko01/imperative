@@ -196,7 +196,7 @@ pipeline {
                     echo 'Installing Dependencies'
 
                     withCredentials([usernamePassword(credentialsId: ARTIFACTORY_CREDENTIALS_ID, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "expect -f ./jenkins/npm_login.expect $USERNAME $PASSWORD \"$ARTIFACTORY_EMAIL\""
+                        sh "expect -f ./jenkins/npm_login_zowe.expect $USERNAME $PASSWORD \"$ARTIFACTORY_EMAIL\""
                     }
 
                     sh 'npm install'
