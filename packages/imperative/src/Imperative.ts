@@ -13,7 +13,7 @@
  * Main class of the Imperative framework, returned when you
  * require("imperative") e.g. const imperative =  require("imperative");
  */
-import { PerformanceTools } from "../../performance";
+import { PerformanceTools } from "@zowe/perf-timing";
 
 // Boostrap the performance tools
 if (PerformanceTools.instance.isPerfEnabled) {

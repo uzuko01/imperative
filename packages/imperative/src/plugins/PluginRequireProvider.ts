@@ -11,7 +11,7 @@
 
 import Module = require("module");
 
-import { PerformanceTools } from "../../../performance";
+import { PerformanceTools } from "@zowe/perf-timing";
 import { ImperativeConfig } from "../ImperativeConfig";
 import * as path from "path";
 import * as findUp from "find-up";
