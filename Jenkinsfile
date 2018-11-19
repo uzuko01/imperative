@@ -200,7 +200,7 @@ pipeline {
                     }
 
                     sh 'npm install'
-                    sh 'npm logout'
+                    sh 'npm logout --scope=@zowe'
                 }
             }
         }
