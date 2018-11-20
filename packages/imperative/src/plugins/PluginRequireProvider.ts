@@ -11,7 +11,7 @@
 
 import Module = require("module");
 
-import { PerformanceTools } from "@zowe/perf-timing";
+import { PerfTiming } from "@zowe/perf-timing";
 import { ImperativeConfig } from "../ImperativeConfig";
 import * as path from "path";
 import * as findUp from "find-up";
@@ -127,13 +127,13 @@ export class PluginRequireProvider {
      * @param modules The modules that should be injected from the runtime instance
      */
     private constructor(private readonly modules: string[]) {
-        if (PerformanceTools.instance.isPerfEnabled) {
+        if (PerfTiming.isPerfEnabled) {
             // Stop tracking time of module imports before the module loader was created.
             // Effectively we are renaming the timer so we will have 2 metrics:
             //      All imports that happened before the module loader initialized
             //      All imports after the module loader initialized.
-            Module.prototype.require = PerformanceTools.instance.untimerify(Module.prototype.require);
-            Module.prototype.require = PerformanceTools.instance.timerify(
+            Module.prototype.require = PerfTiming.getApi().untimerify(Module.prototype.require);
+            Module.prototype.require = PerfTiming.getApi().timerify(
                 Module.prototype.require,
                 `${Module.prototype.require.name} injected from module loader`
             );
@@ -175,7 +175,7 @@ export class PluginRequireProvider {
 
         // Timerify the function if needed
         // Gave it a name so that we can more easily track it
-        Module.prototype.require = PerformanceTools.instance.timerify(function PluginModuleLoader(request: string) {
+        Module.prototype.require = PerfTiming.getApi().timerify(function PluginModuleLoader(request: string) {
             // Check to see if the module should be injected
             const doesUseOverrides = request.match(regex);
 

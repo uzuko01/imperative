@@ -13,12 +13,21 @@
  * Main class of the Imperative framework, returned when you
  * require("imperative") e.g. const imperative =  require("imperative");
  */
-import { PerformanceTools } from "@zowe/perf-timing";
+import { PerfTiming } from "@zowe/perf-timing";
 
-// Boostrap the performance tools
-if (PerformanceTools.instance.isPerfEnabled) {
+// Bootstrap the performance tools
+if (PerfTiming.isPerfEnabled) {
     // These are expensive operations so imperative should
     // only do it when performance is enabled.
+
+    // PerfTiming.getApi().mark("test1");
+    // PerfTiming.getApi().mark("test2");
+    // PerfTiming.getApi().measure("test", "test1", "test2");
+    //
+    // PerfTiming.getApi().mark("test3");
+    // PerfTiming.getApi().mark("test4");
+    // PerfTiming.getApi().measure("test5", "test3", "test4");
+    // PerfTiming.getApi().measure("test", "test3", "test4");
 
     const Module = require("module");
 
@@ -27,7 +36,7 @@ if (PerformanceTools.instance.isPerfEnabled) {
 
     // Timerify a wrapper named function so we can be sure that not just
     // any anonymous function gets checked.
-    Module.prototype.require = PerformanceTools.instance.timerify(function NodeModuleLoader() {
+    Module.prototype.require = PerfTiming.getApi().timerify(function NodeModuleLoader() {
         return originalRequire.apply(this, arguments);
     });
 }
@@ -106,35 +115,6 @@ export class Imperative {
      * @returns {Promise<void>} A promise indicating that we are done here.
      */
     public static init(config?: IImperativeConfig): Promise<void> {
-        // let fcn = () => {
-        //     return "hello world";
-        // };
-        //
-        // console.log(fcn.name);
-        //
-        // fcn = PerformanceTools.instance.timerify(fcn);
-        //
-        // console.log(fcn.name);
-        //
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        //
-        // fcn = PerformanceTools.instance.untimerify(fcn);
-        // fcn = PerformanceTools.instance.timerify(fcn, "TEST");
-        //
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        // fcn();
-        //
-        // fcn = PerformanceTools.instance.untimerify(fcn, "TEST");
-
         return new Promise<void>(async (initializationComplete: () => void, initializationFailed: ImperativeReject) => {
             try {
                 /**
