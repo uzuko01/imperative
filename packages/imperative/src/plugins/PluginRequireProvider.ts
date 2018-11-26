@@ -127,7 +127,7 @@ export class PluginRequireProvider {
      * @param modules The modules that should be injected from the runtime instance
      */
     private constructor(private readonly modules: string[]) {
-        if (PerfTiming.isPerfEnabled) {
+        if (PerfTiming.isEnabled) {
             // Stop tracking time of module imports before the module loader was created.
             // Effectively we are renaming the timer so we will have 2 metrics:
             //      All imports that happened before the module loader initialized

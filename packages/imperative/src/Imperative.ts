@@ -16,7 +16,7 @@
 import { PerfTiming } from "@zowe/perf-timing";
 
 // Bootstrap the performance tools
-if (PerfTiming.isPerfEnabled) {
+if (PerfTiming.isEnabled) {
     // These are expensive operations so imperative should
     // only do it when performance is enabled.
 
